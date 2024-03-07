@@ -35,8 +35,9 @@ export default function Page() {
 
   return (
     <main>
-      <h1>Minecraft Package Downloader</h1>
-      <br />
+      <Spacer y={3} />
+      <h1 className='text-2xl'>Minecraft Package Downloader</h1>
+      <Spacer y={3} />
       <div className='horizontal'>
         <Select required label='Select package' size='sm' selectedKeys={[packageName]} onChange={onChangePackage}>
           {Object.keys(packages).map(mcpackage => <SelectItem key={mcpackage}>{`@minecraft/${mcpackage}`}</SelectItem>)}
