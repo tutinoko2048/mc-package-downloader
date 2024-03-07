@@ -1,6 +1,6 @@
 const releaseRegex = /^\d+\.\d+\.\d+$/;
 
-const typeList = {
+const typeList: Record<'full' | 'preview' | 'release' | 'rc', Record<string, (version: string) => void>> = {
   full: {
     'stable-beta': (version: string) => version.includes('beta') && (version.includes('stable') || version.includes('release')),
     'release': (version: string) => releaseRegex.test(version),
@@ -11,23 +11,32 @@ const typeList = {
     'stable': (version: string) => !version.includes('preview'),
     'preview': (version: string) => version.includes('preview')
   },
-  stable: {
-    'stable': (_version: string) => true
+  release: {
+    'release': (_version: string) => true
+  },
+  rc: {
+    'release': (version: string) => releaseRegex.test(version),
+    'preview-rc': (version: string) => version.includes('preview') && version.includes('rc')
   }
 }
 
-export const packages: Record<Packages, { typeList: Record<string, (version: string) => boolean> }> = {
+export const packages = {
   'server': { typeList: typeList.full },
   'server-ui': { typeList: typeList.full },
   'vanilla-data': { typeList: typeList.preview },
-  'math': { typeList: typeList.stable },
-  'server-net': { typeList: typeList.full }
+  'math': { typeList: typeList.release },
+  'server-net': { typeList: typeList.full },
+  'debug-utilities': { typeList: typeList.full},
+  'server-gametest': { typeList: typeList.full },
+  'server-editor': { typeList: typeList.full },
+  'server-admin': { typeList: typeList.full },
+  'common': { typeList: typeList.rc },
+  'core-build-tasks': { typeList: typeList.release },
 }
 
-export type Packages = 'server' | 'server-ui' | 'vanilla-data' | 'math' | 'server-net';
+export type Packages = keyof typeof packages;
 
 export async function getPackageVersions(packageName: Packages, type: string): Promise<NPM.VersionData[]> {
-  console.log(packageName, type)
   const res = await fetch(`https://registry.npmjs.org/@minecraft/${packageName}`);
   const data: NPM.Package = await res.json();
   const filter = packages[packageName].typeList[type];
