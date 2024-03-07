@@ -2,9 +2,9 @@
 
 import { Select, SelectItem, Spinner } from '@nextui-org/react';
 import React from 'react';
-import { getPackageVersions } from './downloader';
+import { Packages, getPackageVersions } from './downloader';
 
-const packages = [
+const packages: { name: Packages, label: string }[] = [
   { name: 'server', label: '@minecraft/server' },
   { name: 'server-ui', label: '@minecraft/server-ui' },
   { name: 'vanilla-data', label: '@minecraft/vanilla-data' },
@@ -13,12 +13,12 @@ const packages = [
 ]
 
 export default function Page() {
-  const [packageName, setPackageName] = React.useState<string>('');
+  const [packageName, setPackageName] = React.useState<Packages | ''>('');
   const [packageLoading, setPackageLoading] = React.useState<boolean>(false);
   const [packageVersions, setPackageVersions] = React.useState<string[]>([]);
 
   const onChangePackage = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target.value as Packages;
     setPackageName(value);
     if (value) setPackageLoading(true);
     setPackageVersions([]);

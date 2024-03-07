@@ -6,6 +6,8 @@ const previewBetaRegex = /\d+\.\d+\.\d+-beta\.(?:\d+\.\d+\.\d+-preview\.\d+|prev
 const previewRcRegex = /\d+\.\d+\.\d+-rc\.\d+\.\d+\.\d+-preview\.\d+/
 const releaseRegex = /^\d+\.\d+\.\d+$/
 
+export type Packages = 'server' | 'server-ui' | 'vanilla-data' | 'math' | 'server-net';
+
 function sortVersion(a: string, b: string) {
   if (
     a.match(/release|rc|\.preview\./) || b.match(/release|rc|\.preview\./)
@@ -22,7 +24,7 @@ function sortVersion(a: string, b: string) {
   return a.localeCompare(b);
 }
 
-export async function getPackageVersions(packageName: string) {
+export async function getPackageVersions(packageName: Packages) {
   const res = await fetch(`https://registry.npmjs.org/@minecraft/${packageName}`)
   const data = await res.json();
   const versions = Object.keys(data.versions)
