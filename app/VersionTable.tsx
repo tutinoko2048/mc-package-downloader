@@ -4,7 +4,7 @@ import { Link, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow }
 import { NPM } from './downloader';
 
 interface Props {
-  versions: NPM.VersionData[]
+  versions: NPM.VersionData[];
 }
 
 export function VersionTable({ versions }: Props) {
@@ -18,7 +18,7 @@ export function VersionTable({ versions }: Props) {
         {versions.map(v => (
           <TableRow key={v.version}>
             <TableCell>
-                <Link href={v.dist.tarball} className='text-sm'>{v.version}</Link>
+              <Link href={v.dist.tarball} className='text-sm'>{v.version}</Link>
             </TableCell>
             <TableCell>
               <div className='text-xs'>{v.updated_at}</div>
