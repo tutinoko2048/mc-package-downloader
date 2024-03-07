@@ -12,19 +12,23 @@ export default function Page() {
   const [packageType, setPackageType] = React.useState<string>('');
 
   const onChangePackage = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as Packages;
-    const type = packageType in packages[value].typeList ? packageType : Object.keys(packages[value].typeList)[0]
+    const value = e.target.value as Packages || packageName;
+    const type = packageType in packages[value].typeList ? packageType : Object.keys(packages[value].typeList)[0];
     setPackageName(value);
-    setPackageType(type)
-    setPackageLoading(true);
-    await updateVersions(value, type);
+    if (e.target.value) {
+      setPackageType(type)
+      setPackageLoading(true);
+      await updateVersions(value, type);
+    }
   }
 
   const onChangeType = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value || Object.keys(packages[packageName].typeList)[0];
+    const value = e.target.value || packageType;
     setPackageType(value);
-    setPackageLoading(true);
-    await updateVersions(packageName, value);
+    if (e.target.value) {
+      setPackageLoading(true);
+      await updateVersions(packageName, value);
+    }
   }
 
   const updateVersions = async (packageName: Packages, type: string) => {
@@ -40,11 +44,11 @@ export default function Page() {
       <h1 className='text-2xl'>Minecraft Package Downloader</h1>
       <Spacer y={3} />
       <div className='horizontal'>
-        <Select required label='Select package' size='sm' selectedKeys={[packageName]} onChange={onChangePackage}>
+        <Select required label='Package Name' size='sm' selectedKeys={[packageName]} onChange={onChangePackage}>
           {Object.keys(packages).map(mcpackage => <SelectItem key={mcpackage}>{`@minecraft/${mcpackage}`}</SelectItem>)}
         </Select>
         <Spacer x={1} y={1} />
-        <Select required label='Select type' size='sm' selectedKeys={[packageType]} onChange={onChangeType}>
+        <Select required label='Package Type' size='sm' selectedKeys={[packageType]} onChange={onChangeType}>
           {Object.keys(packages[packageName].typeList).map(type => <SelectItem key={type}>{type}</SelectItem>)}
         </Select>
       </div>
