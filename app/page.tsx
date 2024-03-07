@@ -3,6 +3,7 @@
 import { Link, Select, SelectItem, Spacer, Spinner } from '@nextui-org/react';
 import React from 'react';
 import { NPM, Packages, getPackageVersions, packages } from './downloader';
+import { VersionTable } from './VersionTable';
 
 export default function Page() {
   const [packageName, setPackageName] = React.useState<Packages>('server');
@@ -50,11 +51,8 @@ export default function Page() {
       
       <Spacer y={4} />
       {packageLoading && <Spinner />}
-      {...packageVersions.map(v => (
-        <div key={v.version}>
-          <Link href={v.dist.tarball}>{v.version}</Link>
-        </div>
-      ))}
+      {!packageLoading && <VersionTable versions={packageVersions} />}
+
     </main>
   )
 }

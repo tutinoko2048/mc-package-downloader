@@ -35,6 +35,9 @@ export async function getPackageVersions(packageName: Packages, type: string): P
     .filter(x => !x.version.includes('internal'))
     .filter(x => filter(x.version))
     .reverse();
+  for (const v of versions) {
+    v.updated_at = data.time[v.version];
+  }
   return versions;
 }
 
@@ -49,6 +52,7 @@ export namespace NPM {
     version: string;
     dist: {
       tarball: string;
-    }
+    },
+    updated_at: string;
   }
 }
