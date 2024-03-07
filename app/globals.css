@@ -13,14 +13,23 @@
     --background-rgb: 0, 0, 0;
   }
 }
-
+*/
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-}*/
+  /*color: rgb(var(--foreground-rgb));*/
+  /*background: rgb(var(--background-rgb));*/
+  margin: 0 0.5em
+}
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+
+@media screen and (min-width: 30rem) {
+  .horizontal {
+    display: flex
+  }
+}
+
+
