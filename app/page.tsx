@@ -32,7 +32,6 @@ export default function Page() {
   }
 
   const updateVersions = async (name: Packages, type: string) => {
-    console.log('update', name, type)
     setPackageLoading(true);
     const versions = await getPackageVersions(name, type);
     setPackageVersions(versions);
@@ -40,7 +39,6 @@ export default function Page() {
   }
 
   React.useEffect(() => {
-    console.log('effect')
     updateVersions(packageName, packageType);
     const query = new URLSearchParams({ package: packageName, type: packageType });
     router.push(pathname + '?' + query.toString());
