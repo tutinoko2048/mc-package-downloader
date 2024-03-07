@@ -1,13 +1,13 @@
 'use client';
 
-import { Select, SelectItem, Spacer, Spinner } from '@nextui-org/react';
+import { Link, Select, SelectItem, Spacer, Spinner } from '@nextui-org/react';
 import React from 'react';
-import { Packages, getPackageVersions, packages } from './downloader';
+import { NPM, Packages, getPackageVersions, packages } from './downloader';
 
 export default function Page() {
   const [packageName, setPackageName] = React.useState<Packages>('server');
   const [packageLoading, setPackageLoading] = React.useState<boolean>(false);
-  const [packageVersions, setPackageVersions] = React.useState<string[]>([]);
+  const [packageVersions, setPackageVersions] = React.useState<NPM.VersionData[]>([]);
   const [packageType, setPackageType] = React.useState<string>('');
 
   const onChangePackage = async (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,7 +50,11 @@ export default function Page() {
       
       <Spacer y={4} />
       {packageLoading && <Spinner />}
-      {...packageVersions.map(v => <div key={v}>{v}</div>)}
+      {...packageVersions.map(v => (
+        <div key={v.version}>
+          <Link href={v.dist.tarball}>{v.version}</Link>
+        </div>
+      ))}
     </main>
   )
 }

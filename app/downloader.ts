@@ -26,14 +26,29 @@ export const packages: Record<Packages, { typeList: Record<string, (version: str
 
 export type Packages = 'server' | 'server-ui' | 'vanilla-data' | 'math' | 'server-net';
 
-export async function getPackageVersions(packageName: Packages, type: string) {
+export async function getPackageVersions(packageName: Packages, type: string): Promise<NPM.VersionData[]> {
   console.log(packageName, type)
-  const res = await fetch(`https://registry.npmjs.org/@minecraft/${packageName}`)
-  const data = await res.json();
+  const res = await fetch(`https://registry.npmjs.org/@minecraft/${packageName}`);
+  const data: NPM.Package = await res.json();
   const filter = packages[packageName].typeList[type];
-  const versions = Object.keys(data.versions)
-    .filter(x => !x.includes('internal'))
-    .filter(filter)
+  const versions = Object.values(data.versions)
+    .filter(x => !x.version.includes('internal'))
+    .filter(x => filter(x.version))
     .reverse();
   return versions;
+}
+
+export namespace NPM {
+  export interface Package {
+    versions: Record<string, VersionData>;
+    time: Record<string, string>;
+  }
+
+  export interface VersionData {
+    name: string;
+    version: string;
+    dist: {
+      tarball: string;
+    }
+  }
 }
