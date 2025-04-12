@@ -31,7 +31,7 @@ export const packages = {
   'server-editor': { typeList: typeList.full },
   'server-admin': { typeList: typeList.full },
   'common': { typeList: typeList.rc },
-  'core-build-tasks': { typeList: typeList.release },
+  'diagnostics': { typeList: typeList.full },
 }
 
 export type Packages = keyof typeof packages;
